@@ -7,7 +7,7 @@ class BasePermissionMixin(PermissionRequiredMixin):
 class AddPermissionMixin(BasePermissionMixin):
 	def dispatch(self, request, *args, **kwargs):
 		self.permission_required = self.model._meta.get_add_permission()
-		return super(CreatePermissionMixin, self).dispatch(request, *args, **kwargs)
+		return super(AddPermissionMixin, self).dispatch(request, *args, **kwargs)
 
 class ChangePermissionMixin(BasePermissionMixin):
 	def dispatch(self, request, *args, **kwargs):

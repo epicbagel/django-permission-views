@@ -1,4 +1,4 @@
-from brances.views importPermissionRequiredMixin
+from brances.views import PermissionRequiredMixin
 from django.conf import settings
 
 class BasePermissionMixin(PermissionRequiredMixin):

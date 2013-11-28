@@ -32,7 +32,7 @@ class BasePermissionMixin(object):
 		# Check to see if the request's user has the required permission.
 		has_permission = request.user.has_perm(self.permission_required)
 		# If the user lacks the permission
-		if not has_permission:
+		if not has_permission and request.user.is_authenticated():
 			# *and* if an exception was desired
 			if self.raise_exception:
 				raise PermissionDenied  # return a forbidden response.
@@ -51,13 +51,13 @@ class AddPermissionMixin(BasePermissionMixin):
 class ViewPermissionMixin(BasePermissionMixin):
 	def dispatch(self, request, *args, **kwargs):
 		meta = self.model._meta
-		self.permission_required = "%s.%s" % (meta.app_label, meta.get_view_permission())
+		self.permission_required = "%s.%s" % (meta.app_label, self.model.get_view_permission())
 		return super(ViewPermissionMixin, self).dispatch(request, *args, **kwargs)
 
 class ChangePermissionMixin(BasePermissionMixin):
 	def dispatch(self, request, *args, **kwargs):
 		meta = self.model._meta
-		self.permission_required = "%s.%s" % (meta.app_label, meta.get_change_permission())
+		self.permission_required = "%s.%s" % (meta.app_label, 'view_%s' % self.model.object_name.lower())
 		return super(ChangePermissionMixin, self).dispatch(request, *args, **kwargs)
 
 class DeletePermissionMixin(BasePermissionMixin):

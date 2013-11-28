@@ -51,13 +51,13 @@ class AddPermissionMixin(BasePermissionMixin):
 class ViewPermissionMixin(BasePermissionMixin):
 	def dispatch(self, request, *args, **kwargs):
 		meta = self.model._meta
-		self.permission_required = "%s.%s" % (meta.app_label, self.model.get_view_permission())
+		self.permission_required = "%s.%s" % (meta.app_label, 'view_%s' % self.model.object_name.lower())
 		return super(ViewPermissionMixin, self).dispatch(request, *args, **kwargs)
 
 class ChangePermissionMixin(BasePermissionMixin):
 	def dispatch(self, request, *args, **kwargs):
 		meta = self.model._meta
-		self.permission_required = "%s.%s" % (meta.app_label, 'view_%s' % self.model.object_name.lower())
+		self.permission_required = "%s.%s" % (meta.app_label, self.model.get_change_permission())
 		return super(ChangePermissionMixin, self).dispatch(request, *args, **kwargs)
 
 class DeletePermissionMixin(BasePermissionMixin):

@@ -57,7 +57,7 @@ class ViewPermissionMixin(BasePermissionMixin):
 class ChangePermissionMixin(BasePermissionMixin):
 	def dispatch(self, request, *args, **kwargs):
 		meta = self.model._meta
-		self.permission_required = "%s.%s" % (meta.app_label, self.model.get_change_permission())
+		self.permission_required = "%s.%s" % (meta.app_label, meta.get_change_permission())
 		return super(ChangePermissionMixin, self).dispatch(request, *args, **kwargs)
 
 class DeletePermissionMixin(BasePermissionMixin):
